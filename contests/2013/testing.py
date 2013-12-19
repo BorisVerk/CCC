@@ -1,25 +1,26 @@
-import sys
-import os
+"""testing.py
+Developed to test my python problems in preparation for the CCC
 
-"""testing:
-developed to test my python problems in preparation for the CCC
-
-assumptions are
-folder structure:
+Assumptions are
+Folder structure:
     year
      senior
       solutions are here as s1.1.in and s1.1.out files
      1.py, 2.py etc
-full path of file must be passed in as argv[1]
+And full path of file must be passed in as argv[1]
+
+Todos:
+    Remove second assumption
+    Add error support
 
 """
+
+import sys
+import os
 
 if len(sys.argv) != 2:
     sys.exit('Usage: python testing.py /path/to/file/being/tested/X.py')
 
-#I don't know why argv would not include 'python' as [0]
-#but it doesn't. Refencing the last element just in case
-#it does on other computers
 file_path = sys.argv[-1]
 file_directory = sys.argv[-1][:-4]
 problem_number = int(file_path[-4])
