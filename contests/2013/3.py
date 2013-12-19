@@ -1,6 +1,7 @@
 from itertools import combinations, product as cartesian_product
+from copy import deepcopy
 
-infile = open('/Users/HDD/src/CCC/contests/2013/s3.in', 'r')
+infile = open('s3.in', 'r')
 
 
 team = int(infile.readline().strip())
@@ -12,7 +13,7 @@ scores = {1: 0, 2: 0, 3: 0, 4: 0}
 
 games_left = [comb for comb in combinations(scores.keys(), 2)]
 
-#populate scores and determine which games have yet to be played
+# Populate scores and determine which games have yet to be played
 for line in infile:
     parsed_line = [int(x) for x in line.split()]
     teamA = parsed_line[0]
@@ -35,7 +36,7 @@ possible_wins = 0
 outcomes = ["win", "loss", "tie"]
 
 for possible_outcomes in cartesian_product(outcomes, repeat=games_remaining):
-    temp_scores = scores.copy()
+    temp_scores = deepcopy(scores)
 
     for x in range(games_remaining):
         if possible_outcomes[x] == "win":
