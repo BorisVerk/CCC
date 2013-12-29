@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """testing.py
 Developed to test my python problems in preparation for the CCC
 
@@ -7,65 +9,76 @@ Folder structure:
      senior
       solutions are here as s1.1.in and s1.1.out files
      1.py, 2.py etc
-And full path of file must be passed in as argv[1]
 
 Todos:
-    Remove second assumption
     Add error support
 
 """
 
-import sys
 import os
+import sys
 
-if len(sys.argv) != 2:
-    sys.exit('Usage: python testing.py /path/to/file/being/tested/X.py')
+def get_slutions_files(dir):
+    file_paths = list()
+    for file in os.listdir(dir):
+        if file.endswith('.in'):
+            infile_path = dir + file
+            outfile_path = dir + file.replace('in', 'out')
+            file_paths.append((infile_path, outfile_path))
+    return file_paths
 
-file_path = sys.argv[-1]
-file_directory = sys.argv[-1][:-4]
-problem_number = int(file_path[-4])
+def parse_argv():
+    if len(sys.argv) != 2:
+        sys.exit("Usage: python ./test.py problem_number")
 
-if file_path[-3:] != '.py' or file_path[-5] != '/' or problem_number not in range(1,5):
-    sys.exit('Bad file name. Should be X.py \nwhere x is from 1 to 5')
+    problem_number = 0
+    if len(sys.argv[-1]) == 1: problem_number = int(sys.argv[-1])
+    elif len(sys.argv[-1]) == 4 and sys.argv[-1][1:] == ".py":
+        try: problem_number = int(sys.argv[-1][0])
+        except ValueError:
+            sys.exit("Usage: python ./test.py problem_number")
+    else: sys.exit("Usage: python ./test.py problem_number")
+    if problem_number not in range(1,6): 
+        sys.exit("Bad File Name: there are only 5 problems")
+    return problem_number
+    
 
-#this folder layout is a given. folder will contain all .in files and their outs
-solutions_directory = file_path[:-4] + 'senior/S' + str(problem_number) + '/'
-solution_file_paths = []
-for filename in os.listdir(solutions_directory):
-    if filename.endswith('.in'):
-        infile_path = solutions_directory + filename
-        outfile_path = solutions_directory + filename.replace('in', 'out')
-        solution_file_paths.append((infile_path, outfile_path))
+problem_number = parse_argv()
 
-temp_infile_path = file_directory + 's' + str(problem_number) + '.in'
-temp_outfile_path = file_directory + 'progOutput.txt'
+current_dir = os.getcwd() + '/'
+exec_path = current_dir + str(problem_number) + '.py'
+
+solutions_directory = current_dir + 'senior/S' + str(problem_number) + '/'
+solution_file_paths = get_slutions_files(solutions_directory)
+
+temp_infile_path = current_dir + 's' + str(problem_number) + '.in'
+temp_outfile_path = current_dir + 'progOutput.txt'
+
+
+temp_infile_path = current_dir + 's' + str(problem_number) + '.in'
+temp_outfile_path = current_dir + 'progOutput.txt'
 
 trials_failed = 0
-
 for infile_path, outfile_path in solution_file_paths:    
-    infile = open(infile_path, 'r')
-    outfile = open(outfile_path, 'r')
-    
-    with open(temp_infile_path, 'w') as temp_in:
-        for line in infile:
-            temp_in.write(line)
-        infile.seek(0)
-    
-    os.system('python ' + file_path + ' > ' + temp_outfile_path)
-    
-    with open(temp_outfile_path, 'r') as temp_out:
-        actual_output = temp_out.read().strip()
-        expected = outfile.read().strip()
-        if actual_output != expected:
-            trials_failed += 1
-            print '\nInput:\n' + infile.read().strip()
-            print 'Expected:\n' + expected
-            print 'Actual Output:\n' + actual_output
-            print 'Files: ' + infile_path + ' ' + outfile_path
-            raw_input('\nPress the \'Any\' key to continue.')
+    with open(infile_path, 'r') as infile:
+        with open(outfile_path, 'r') as outfile:
+            with open(temp_infile_path, 'w') as temp_in:
+                for line in infile:
+                    temp_in.write(line)
+                infile.seek(0)
             
-    infile.close()
-    outfile.close()
+            os.system('python ' + exec_path + ' > ' + temp_outfile_path)
+            
+            with open(temp_outfile_path, 'r') as temp_out:
+                actual_output = temp_out.read().strip()
+                expected = outfile.read().strip()
+                if actual_output != expected:
+                    trials_failed += 1
+                    print '\nInput:\n' + infile.read().strip()
+                    print 'Expected:\n' + expected
+                    print 'Actual Output:\n' + actual_output
+                    print 'Files: ' + infile_path + ' ' + outfile_path
+                    raw_input('\nPress the \'Any\' key to continue.')
     
 if trials_failed == 0:
     print '\nComplete Success\n'

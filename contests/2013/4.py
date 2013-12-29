@@ -1,42 +1,41 @@
-import sys
-# I refuse to name my variables as archaically as the spesifications suggest
 infile = open("/Users/HDD/src/CCC/contests/2013/s4.in", "r")
 
 first_line = infile.readline().split(" ")
 class_size, comparisons_done = int(first_line[0]), int(first_line[1])
 
-print class_size
-
-data = {}
+data = []
 for x in xrange(comparisons_done):
     line = infile.readline().split(" ")
-    (taller, shorter) = (int(line[0]), int(line[1])) # Useless line for readability
-    data[(taller, shorter)] = False # Flag used for searching
+    (taller, shorter) = (int(line[0]), int(line[1]))
+    data.append((taller, shorter))
 
 last_line = infile.readline().split(" ")
 personA, personB = int(last_line[0]), int(last_line[1])
 
 infile.close()
 
-# Everything bellow is super rough, doesn't work. it's 7am I gotta sleep
 search_space = [personA]
 
-def search():
+def search(search_space):
+    new_search_space = []
+    something_happened = False
     for element in search_space:
-        if (element, personB) in data.keys():
+        if (element, personB) in data:
             return "yes"
-        elif (personB, element) in data.keys():
+        elif (personB, element) in data:
             return "no"
         else:
             for i in xrange(class_size):
-                if (element, i) in data.keys() and data[(element, i)] == False:
-                    search_space.append(i)
-                    data[(element, i)] = False
+                if (element, i) in data:
+                    new_search_space.append(i)
+                    data.remove((element, i))
                     something_happened = True
     if something_happened:
-        return search()
+        search_space = new_search_space
+        return search(search_space)
     else:
-        sys.exit("unknown")
+        return "unknown"
+                    
     
-        
-print search()
+    
+print search(search_space)
