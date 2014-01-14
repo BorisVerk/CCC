@@ -4,11 +4,13 @@
 Developed to test my python problems in preparation for the CCC
 
 Assumptions are
+all programs being tested are called X.py where X is the problem number (from 1 to 5)
 Folder structure:
     year
      senior
       solutions are here as s1.1.in and s1.1.out files
      1.py, 2.py etc
+all files read from sX.in, where X is the problem number
 
 works on at least python 2.6
 """
@@ -32,6 +34,12 @@ def parse_argv():
         sys.exit("Bad File Name: there are only 5 problems")
         
     return problem_number
+
+def check_executable(path):
+    if os.path.exists(path) == False:
+        file_name = os.path.basename(path)
+        print 'Do not run this program in Canopy'
+        sys.exit("Error: file " + file_name + " does not exist at " + os.path.dirname(path))
 
 
 def get_solution_file_paths(directory):
@@ -62,27 +70,8 @@ def report(infile, expected_output, actual_output, infile_path):
     outfile = infile.replace('in', 'out')
     print 'Files: ' + infile + ' ' + outfile 
     raw_input('\nPress the \'Any\' key to continue.')
-    
 
-problem_number = parse_argv()
-
-current_dir = os.getcwd() + '/'
-
-exec_path = current_dir + str(problem_number) + '.py' 
-
-#check that file we're checking actually exists
-if os.path.exists(exec_path) == False:
-    file_name = os.path.basename(exec_path)
-    print 'Do not run this program in Canopy'
-    sys.exit("Error: file " + file_name + " does not exist at " + current_dir)
-
-solutions_directory = current_dir + 'senior/S' + str(problem_number) + '/'
-solution_file_paths = get_solution_file_paths(solutions_directory)
-
-temp_infile_path = current_dir + 's' + str(problem_number) + '.in'
-temp_outfile_path = current_dir + 'progOutput.txt'
-
-try:
+def test_program(exec_path, solution_file_paths, temp_infile_path, temp_outfile_path):
     total_trials = len(solution_file_paths)
     trials_failed = 0
     for infile_path, outfile_path in solution_file_paths:    
@@ -99,8 +88,8 @@ try:
                     if actual_output != expected_output:
                         trials_failed += 1
                         report(infile, expected_output, actual_output, infile_path)
-                        
-        
+    
+    
     if trials_failed:
         print '\nTrials Failed: ' + str(trials_failed)
         print 'Score: ' + str(total_trials-trials_failed) + '/' + str(total_trials)
@@ -108,5 +97,25 @@ try:
         total_trials = str(len(solution_file_paths))
         print 'Complete Success'
         print 'Score: ' + str(total_trials) + '/' + str(total_trials)
-finally:
-    os.system('rm -f ' + temp_infile_path + ' ' + temp_outfile_path)
+
+    
+if __name__ == 'main':
+    problem_number = parse_argv()
+
+    current_dir = os.getcwd() + '/'
+
+    exec_path = current_dir + str(problem_number) + '.py' 
+
+    #check that the file we're going to be running actually exists
+    check_executable(exec_path)
+
+    solutions_directory = current_dir + 'senior/S' + str(problem_number) + '/'
+    solution_file_paths = get_solution_file_paths(solutions_directory)
+
+    temp_infile_path = current_dir + 's' + str(problem_number) + '.in'
+    temp_outfile_path = current_dir + 'progOutput.txt'
+
+    try:
+        test_program(exec_path, solution_file_paths, temp_infile_path, temp_outfile_path)
+    finally:
+        os.system('rm -f ' + temp_infile_path + ' ' + temp_outfile_path)

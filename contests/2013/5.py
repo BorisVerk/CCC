@@ -27,6 +27,5 @@ while number != 1: # 1 is what we're trying to get to
     else: # if number is prime, go back only 1
         number -= 1
         cost += number
-    print number, factor, cost
         
 print cost

@@ -13,15 +13,15 @@ random.seed()
 
 def parse_argv():
     if len(sys.argv) != 2:
-        sys.exit("Usage: python ./test.py problem_number")
+        sys.exit("Usage: python ./randomOut.py problem_number")
 
     problem_number = 0
     if len(sys.argv[-1]) == 1: problem_number = int(sys.argv[-1])
     elif len(sys.argv[-1]) == 4 and sys.argv[-1][1:] == ".py":
         try: problem_number = int(sys.argv[-1][0])
         except ValueError:
-            sys.exit("Usage: python ./test.py problem_number")
-    else: sys.exit("Usage: python ./test.py problem_number")
+            sys.exit("Usage: python ./randomOut.py problem_number")
+    else: sys.exit("Usage: python ./randomOut.py problem_number")
     
     if problem_number not in range(1,6): 
         sys.exit("Bad File Name: there are only 5 problems")
