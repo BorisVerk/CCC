@@ -1,55 +1,71 @@
 # again, not my solution
 # note to self, rewrite this to learn to use nested lists
 
-# returns true if person_one is taller than person_two
-# uses a Breadth first Search thru the "search_tree" tree of size class_size
-def taller(search_tree, class_size, person_one, person_two):
-    # visited is a "visited" list for tracking (don't go to same guy twice)
-    visited = []
-    for r in range(class_size):
-        visited.append(False)    
+# returns true if taller_person is taller than shorter_person
+# uses a Breadth first Search through the "search_tree"
+def is_taller(taller_person, shorter_person, search_tree):
     
-    queue = []
-    for link in search_tree[person_one]:
-        queue.append(link)
+    # visited is a list for tracking which people have already been searched
+    # (so that we don't go to same guy more than once and get stuck in a loop)
+    visited = [False for i in xrange(len(search_tree))]
+        
+    #get all the people we know to be shorter than taller_person
+    queue = search_tree[taller_person]
+
     while len(queue) > 0:
-        current_person = queue.pop(0)
-        if current_person == person_two:
-            return True
+        # take the first person of that list
+        current_person = queue.pop()
+        
+        # if this person is the "shorter_person" we are looking for, we are done
+        if current_person == shorter_person: return 'yes'
+
+        # if not, then make sure we haven't already searched this person
         if not visited[current_person]:
-            visited[current_person] = True
+            # add him to the list of people we need to search
             for link in search_tree[current_person]:
                 queue.append(link)
-    return False
+            
+            # mark him as visited if we ever encounter them in the future
+            visited[current_person] = True
+
+                
+    # if we have looked through every possible link that the tallest person
+    # connects to and still haven't found the shorter person, then there is
+    # either no link between the two or the shorter person is actually taller
+    
+    # to make sure the person we think is taller isn't shorter than the person
+    # we think was shorter, repeat the code, but flip the people we are testing
+    visited = [False for i in xrange(len(search_tree))]
+    queue = search_tree[shorter_person]
+
+    while queue:
+        current_person = queue.pop()
+        
+        if current_person == taller_person: return 'no'
+        if not visited[current_person]:
+            for link in search_tree[current_person]: queue.append(link) 
+            visited[current_person] = True    
+
+    # if we've gotten this far and we dont know which person is taller, there
+    # must be no comparison which would link the two people together, and
+    # therefore, it is impossible to know    
+    return 'unknown'
          
  
 with open("s4.in", 'r') as infile:
-    line = infile.readline().strip().split(" ")
-    class_size = int(line[0])
-    total_comparisons = int(line[1])
+    class_size, total_comparisons = [int(i) for i in infile.readline().split()]
  
-    # search_tree is the main array holding all the links
+    # search_tree is the main array holding all the links.
     # it is a list of lists, where the index of the inner list
     # is the person, and the elements withing that list
     # are other people shorter than the index they are in
-    search_tree = []
-    for i in range(class_size):
-        row = []
-        search_tree.append(row)
+    search_tree = [[] for i in xrange(class_size)]    
     
-    
-    for i in range(total_comparisons):
-        line = infile.readline().strip().split()
-        #the 1 is substracted to make a zero indexed array
-        person_one = int(line[0]) - 1 
-        person_two = int(line[1]) - 1
-        search_tree[person_one].append(person_two)
+    for i in xrange(total_comparisons):
+        # the 1 is subtracted to make a zero indexed array
+        taller_person, shorter_person = [int(i)-1 for i in infile.readline().split()]
+        search_tree[taller_person].append(shorter_person)
      
-    line = infile.readline().strip().split()
-    person_one = int(line[0]) - 1
-    person_two = int(line[1]) - 1
+    person = [int(person)-1 for person in infile.readline().strip().split()]
    
-if taller(search_tree, class_size, person_one, person_two): print "yes"
-elif taller(search_tree, class_size, person_two, person_one): print "no"
-else: print "unknown"
-    
+print is_taller(person[0], person[1], search_tree)
