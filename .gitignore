@@ -5,3 +5,6 @@ contests/2013/*.out
 contests/2012/*.in
 contests/2012/*.out
 testing.pyc
+*PLAN*
+*.swp
+.idea

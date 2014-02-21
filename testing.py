@@ -22,37 +22,40 @@ def parse_argv():
     if len(sys.argv) != 2:
         sys.exit("Usage: python ./test.py problem_number")
 
+    # it is optional to specify the ".py", otherwise the last argv sould just be the problem number (just one digit)
+    if len(sys.argv[-1]) != 1 and sys.argv[-1][1:] != ".py":
+        sys.exit("Usage: python ./test.py problem_number")
+
     problem_number = 0
-    if len(sys.argv[-1]) == 1: problem_number = int(sys.argv[-1])
-    elif len(sys.argv[-1]) == 4 and sys.argv[-1][1:] == ".py":
-        try: problem_number = int(sys.argv[-1][0])
-        except ValueError:
-            sys.exit("Usage: python ./test.py problem_number")
-    else: sys.exit("Usage: python ./test.py problem_number")
-    
+    try:
+        problem_number = int(sys.argv[-1][0])
+    except ValueError:
+        sys.exit("Usage: python ./test.py problem_number")
+
     if problem_number not in range(1,6): 
         sys.exit("Bad File Name: there are only 5 problems")
         
     return problem_number
 
-def check_executable(path):
-    if os.path.exists(path) == False:
-        file_name = os.path.basename(path)
-        print 'Do not run this program in Canopy'
-        sys.exit("Error: file " + file_name + " does not exist at " + os.path.dirname(path))
+def check_executable(file_path):
+    if not os.path.exists(file_path):
+        file_name = os.path.basename(file_path)
+        sys.exit("Error: file '" + file_name + "' does not exist at " + os.path.dirname(file_path))
 
 
 def get_solution_file_paths(directory):
-    file_paths = list()
+    file_paths = []
     for file in os.listdir(directory):
         if file.endswith('.in'):
             infile_path = directory + file
-            outfile_path = directory + file.replace('in', 'out')
+            outfile_path = directory + file.replace('.in', '.out')
             if os.path.exists(outfile_path):
                 file_paths.append((infile_path, outfile_path))
             else: 
                 sys.exit("Missing out file for " + os.path.basename(infile_path))
-    return file_paths
+    if file_paths:
+        return file_paths
+    else: sys.exit("No input/output files were found at " + directory)
 
 
 def copyfile(source, destination):
@@ -62,18 +65,26 @@ def copyfile(source, destination):
 
     
 def report(infile, expected_output, actual_output, infile_path):
+
     program_input = infile.read().strip()
-    print '\nInput:\n' + program_input
+    if len(program_input) < 200:
+        print 'Input:\n' + program_input
+    else:
+        print 'Program input too long to display'
+
     print 'Expected:\n' + expected_output
     print 'Actual Output:\n' + actual_output
+
     infile = os.path.basename(infile_path)
     outfile = infile.replace('in', 'out')
     print 'Files: ' + infile + ' ' + outfile 
-    raw_input('\nPress the \'Any\' key to continue.')
+
+    raw_input('Press the \'Any\' key to continue.\n')
 
 def test_program(exec_path, solution_file_paths, temp_infile_path, temp_outfile_path):
-    total_trials = len(solution_file_paths)
+
     trials_failed = 0
+
     for infile_path, outfile_path in solution_file_paths:    
         with open(infile_path, 'r') as infile:
             with open(outfile_path, 'r') as outfile:                
@@ -88,15 +99,14 @@ def test_program(exec_path, solution_file_paths, temp_infile_path, temp_outfile_
                     if actual_output != expected_output:
                         trials_failed += 1
                         report(infile, expected_output, actual_output, infile_path)
-    
-    
+
+    total_trials = len(solution_file_paths)
     if trials_failed:
         print '\nTrials Failed: ' + str(trials_failed)
-        print 'Score: ' + str(total_trials-trials_failed) + '/' + str(total_trials)
+        print 'Score: %d/%d' % (total_trials-trials_failed, total_trials)
     else:
-        total_trials = str(len(solution_file_paths))
         print 'Complete Success'
-        print 'Score: ' + str(total_trials) + '/' + str(total_trials)
+        print 'Score: %d/%d' % (total_trials, total_trials)
 
     
 if __name__ == 'main':

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os, sys
 
 current_dir = os.getcwd()
