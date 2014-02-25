@@ -64,7 +64,7 @@ with open('s4.in', 'r') as infile:
     
     for i in xrange(total_comparisons):
         # the 1 is subtracted to make a zero indexed array
-        taller_person, shorter_person = [int(i)-1 for i in infile.readline().split()]
+        taller_person, shorter_person = [int(person)-1 for person in infile.readline().split()]
         search_tree[taller_person].append(shorter_person)
      
     taller_person, shorter_person = [int(person)-1 for person in infile.readline().split()]
