@@ -8,7 +8,7 @@ def is_taller(taller_person, shorter_person, search_tree):
 
     # visited is a list for tracking which people have already been searched
     # (so that we don't go to same guy more than once and get stuck in a loop)
-    visited = [False for i in xrange(len(search_tree))]
+    visited = [False for _ in xrange(len(search_tree))]
         
     #get all the people we know to be shorter than taller_person
     queue = search_tree[taller_person]
@@ -18,7 +18,8 @@ def is_taller(taller_person, shorter_person, search_tree):
         current_person = queue.pop()
         
         # if this person is the "shorter_person" we are looking for, we are done
-        if current_person == shorter_person: return 'yes'
+        if current_person == shorter_person:
+            return 'yes'
 
         # if not, then make sure we haven't already searched this person
         if not visited[current_person]:
@@ -42,9 +43,11 @@ def is_taller(taller_person, shorter_person, search_tree):
     while queue:
         current_person = queue.pop()
         
-        if current_person == taller_person: return 'no'
+        if current_person == taller_person:
+            return 'no'
         if not visited[current_person]:
-            for link in search_tree[current_person]: queue.append(link) 
+            for link in search_tree[current_person]:
+                queue.append(link)
             visited[current_person] = True    
 
     # if we've gotten this far and we dont know which person is taller, there
@@ -60,7 +63,7 @@ with open('s4.in', 'r') as infile:
     # it is a list of lists, where the INDEX of the inner list
     # is a PERSON, and the elements withing that list
     # are other people shorter than the PERSON they are in
-    search_tree = [[] for i in xrange(class_size)]    
+    search_tree = [[] for i in xrange(class_size)]
     
     for i in xrange(total_comparisons):
         # the 1 is subtracted to make a zero indexed array
