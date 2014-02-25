@@ -1,5 +1,7 @@
 
-# returns true if taller_person is taller than shorter_person
+# returns 'yes' if taller_person is taller than shorter_person
+# returns 'no' if shorter_person turns out to be the taller person
+# returns 'unknown' if it cannot be determined (as per the problem's specifications)
 # uses a Breadth first Search through the "search_tree"
 def is_taller(taller_person, shorter_person, search_tree):
     
