@@ -6,7 +6,7 @@ with open('s5.in', 'r') as infile:
 
     cat_cages = []
     for line in infile:
-        (x, y) = [int(x)-1 for x in line.split(' ')] #subtract 1 just like for row, col
+        x, y = [int(x)-1 for x in line.split(' ')] #subtract 1 just like for row, col
         cat_cages.append((x, y))
 
 all_cages = {(x, y): 0 for x in range(row+1) for y in range(col+1)}
