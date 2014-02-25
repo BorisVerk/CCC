@@ -1,5 +1,3 @@
-
-
 def is_taller(taller_person, shorter_person, search_tree):
     """
     returns 'yes' if taller_person is taller than shorter_person
