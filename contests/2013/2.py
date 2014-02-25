@@ -1,6 +1,4 @@
-#started at 1715
-#finished at 1745
-
+#wow this is bad
 import sys
 stdin = open('s2.in', 'r')
 max_weight = int(stdin.readline())
