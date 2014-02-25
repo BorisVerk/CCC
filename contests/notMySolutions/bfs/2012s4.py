@@ -126,7 +126,7 @@ def search(move):
 
         return "IMPOSSIBLE"
 
-file = open("s4.5.in", 'r')
+file = open("s4.in", 'r')
 n = eval(file.readline().strip())
 while n > 0:
     # create and initialize a visited array

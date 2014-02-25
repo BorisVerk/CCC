@@ -1,46 +1,29 @@
-#took too long to make, takes too long to run, 
-#improve me
-#some of these conversions must be completely unnecessary
-#I hate this code.
+from collections import defaultdict
 
-import collections
+with open('s3.in') as infile:
+    number_of_sensors = int(infile.readline()) #skip first line
 
-def parse_sensors():
-    sensors = []    
-    with open('/Users/HDD/src/CCC/contests/2012/s3.in', 'r') as infile:
-        infile.readline() #skip first line
-        for line in infile:
-            sensors.append(int(line))
-    return sensors
-        
-sensors = parse_sensors()
+    readings = [int(line) for line in infile]
 
-sensor_count = {}
-for reading in set(sensors):
-    count = sensors.count(reading)
-    sensor_count[reading] = count
+reading_freq = defaultdict(int)
+for reading in readings:
+    reading_freq[reading] += 1
 
+#the value is a list of readings which have the same frequency
+#(the frequency is the key)
+most_frequent_readings = defaultdict(list)
+for k, v in reading_freq.iteritems():
+    most_frequent_readings[v].append(k)
 
-count_sensors = collections.defaultdict(list)
-for (k, v) in sensor_count.items():
-    count_sensors[v].append(k)
-
-#this is a function because returns are really easy
-def get_answer(count_sensors):
-    most_common_reading = count_sensors.pop(max(count_sensors.keys()))
-    if len(most_common_reading) > 1:
-        most_common_reading = sorted(most_common_reading)
-        return abs(most_common_reading[0] - most_common_reading[-1])
-    else:
-        second_most_common_reading = count_sensors.pop(max(count_sensors.keys()))
-        if second_most_common_reading > 1:
-            max_dif = 0
-            for reading in second_most_common_reading :
-                dif = abs(most_common_reading[0] - reading)
-                if dif > max_dif:
-                    max_dif = dif
-            return max_dif
-        else: return abs(most_common_reading[0] - second_most_common_reading[0])
-        
-
-print get_answer(count_sensors)
+first_most_common = most_frequent_readings.pop(max(most_frequent_readings))
+if len(first_most_common) > 1:
+    #if some readings share the same largest frequency print the largest possible dif
+    #which is obviously going to be the largest value minus the smallest
+    print max(first_most_common) - min(first_most_common)
+else:
+    #otherwise get the next biggest frequency, this could potentialy contain loads of readings
+    second_most_common = most_frequent_readings.pop(max(most_frequent_readings))
+    #calculate what difference each reading will make with THE most frequent reading
+    possible_difs = map(lambda x: abs(first_most_common[0] - x), second_most_common) #you think this is a joke?
+    #return the largest dif (as per problem specifications)
+    print max(possible_difs)
