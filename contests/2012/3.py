@@ -2,7 +2,6 @@ from collections import defaultdict
 
 with open('s3.in') as infile:
     number_of_sensors = int(infile.readline()) #skip first line
-
     readings = [int(line) for line in infile]
 
 reading_freq = defaultdict(int)
