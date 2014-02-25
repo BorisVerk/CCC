@@ -64,6 +64,6 @@ with open('s4.in', 'r') as infile:
         taller_person, shorter_person = [int(i)-1 for i in infile.readline().split()]
         search_tree[taller_person].append(shorter_person)
      
-    people = [int(person)-1 for person in infile.readline().strip().split()]
+    taller_person, shorter_person = [int(person)-1 for person in infile.readline().split()]
    
-print is_taller(people[0], people[1], search_tree)
+print is_taller(taller_person, shorter_person, search_tree)
