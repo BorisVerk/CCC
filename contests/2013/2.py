@@ -1,22 +1,19 @@
-#wow this is bad
-import sys
-stdin = open('s2.in', 'r')
-max_weight = int(stdin.readline())
-how_many_cars = int(stdin.readline())
-all_cars = [int(x) for x in stdin.read().split()]
+with open('s2.in', 'r') as infile:
+    max_weight = int(infile.readline())
+    how_many_cars = int(infile.readline())
+    all_cars = [int(line) for line in infile]
 
 BRIDGE_SIZE = 4
 bridge = list()
 
-for car in range(len(all_cars)):
-    if car < BRIDGE_SIZE:
-        bridge = all_cars[0:car + 1]
-    else:
+for i, car in enumerate(all_cars):
+    if len(bridge) == BRIDGE_SIZE:
         bridge.pop(0)
-        bridge.append(all_cars[car])
+
+    bridge.append(car)
+
     if sum(bridge) > max_weight:
-        print car
-        sys.exit()
-            
-print how_many_cars
-stdin.close()
+        print i
+        break #is this a pun?
+else:
+    print how_many_cars
