@@ -1,11 +1,4 @@
-#!/usr/bin/env python
-
-"""
-not my solution
-
-I feel like this solution has something to do with Euclid's algorithm for
-finding the GCD
-"""
+#not my solution
 
 with open("s5.in", 'r') as infile:
     number = int(infile.readline().strip())
