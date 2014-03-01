@@ -1,9 +1,4 @@
-contests/2011
 *.DS_Store
-contests/2013/*.in
-contests/2013/*.out
-contests/2012/*.in
-contests/2012/*.out
 testing.pyc
 *PLAN*
 *.swp
