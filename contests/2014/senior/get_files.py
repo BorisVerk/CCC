@@ -4,8 +4,8 @@ import os
 file_dir_url = "http://mmhs.ca/ccc/2014/"
 
 files = {1: map(str, range(1, 6)),
-         2: map(str, range(1, 6)),
-         3: ['1a', '1b', '2a', '2b', '3a', '3b', '4a', '4b', '5a', '5b'],
+         2: ['1a', '1b', '2a', '2b', '3a', '3b', '4a', '4b', '5a', '5b'],
+         3: map(str, range(1, 6)),
          4: map(str, range(1, 16)),
          5: map(str, range(1, 16))}
 
