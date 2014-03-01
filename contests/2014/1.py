@@ -1,9 +1,9 @@
 with open('s1.in', 'r') as infile:
-    how_many_people = int(raw_input())
+    how_many_people = int(infile.readline())
     people = range(1, how_many_people+1) #you're a computer scientist, you should number your friends starting at 0
 
-    how_many_rounds = int(raw_input())
-    rounds = [int(raw_input()) for _ in range(how_many_rounds)]
+    how_many_rounds = int(infile.readline())
+    rounds = [int(line) for line in infile]
 
 for round in rounds:
     new_people = []

@@ -1,3 +1,5 @@
+#not completed
+
 def throw_in_lake(mountain):
     branch = []
 
@@ -11,12 +13,12 @@ def throw_in_lake(mountain):
         else:
             branch.append(car)
 
-tests = int(raw_input())
+tests = int(infile.readline())
 
 for test in range(tests):
-    len_cars = int(raw_input())
+    len_cars = int(infile.readline())
     mountain = []
     for _ in range(len_cars):
-        car = int(raw_input())
+        car = int(infile.readline())
         mountain.append(car)
     print throw_in_lake(mountain)

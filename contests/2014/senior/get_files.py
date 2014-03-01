@@ -29,17 +29,18 @@ for problem_number, file_numbers in files.iteritems():
         infile_url = file_dir_url + infile_name
         outfile_url = file_dir_url + outfile_name
 
-        infile_data = requests.get(outfile_url)
+        infile_data = requests.get(infile_url)
         outfile_data = requests.get(outfile_url)
 
         if 404 in [outfile_data.status_code, infile_data.status_code]:
             not_downloaded_files.append(infile_name)
             not_downloaded_files.append(outfile_name)
         else:
+
             with open(problem_directory + infile_name, 'w') as infile:
-                infile.write(infile_data.text)
+                infile.write(infile_data.text.replace('\r', '')) #the \r messes up my test.py comparison
             with open(problem_directory + outfile_name, 'w') as outfile:
-                outfile.write(outfile_data.text)
+                outfile.write(outfile_data.text.replace('\r', ''))
             total_downloaded_files += 2
 
 print

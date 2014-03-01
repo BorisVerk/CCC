@@ -4,9 +4,10 @@ def is_unique(pairs):
             return 'bad'
     return 'good'
 
-num_of_students = int(raw_input()) #unnecessary
-first_pair = raw_input().strip().split()
-second_pair = raw_input().strip().split()
+with open('s2.in', 'r') as infile:
+    num_of_students = int(infile.readline()) #unnecessary
+    first_pair = infile.readline().strip().split()
+    second_pair = infile.readline().strip().split()
 
 partners = zip(first_pair, second_pair)
 pairs = {first: second for first, second in partners}
