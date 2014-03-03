@@ -3,11 +3,11 @@ import os
 
 file_dir_url = "http://mmhs.ca/ccc/2014/"
 
-files = {1: map(str, range(1, 6)),
+files = {1: ['1', '2', '3', '4', '5'],
          2: ['1a', '1b', '2a', '2b', '3a', '3b', '4a', '4b', '5a', '5b'],
-         3: map(str, range(1, 6)),
-         4: map(str, range(1, 16)),
-         5: map(str, range(1, 16))}
+         3: ['1', '2', '3', '4', '5'],
+         4: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'],
+         5: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15']}
 
 current_directory = os.getcwd()
 print 'Downloading input/output files for the 2014 CCC (senior) to', current_directory
