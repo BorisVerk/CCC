@@ -1,10 +1,7 @@
 #not my solution
 
 with open("s5.in", 'r') as infile:
-    number = int(infile.readline().strip())
-
-cost = 0
-
+    number = int(infile.readline())
 
 def find_smallest_factor(number):
     #largest number we need to go to before concluding number is prime
@@ -15,18 +12,16 @@ def find_smallest_factor(number):
         if number % factor == 0:
             return factor
 
-
-while number != 1:  # 1 is what we're trying to get to
+cost = 0
+while number is not 1:  # 1 is what we're trying to get to
     factor = find_smallest_factor(number)
     if factor:
         #everything that is left after the smallest factor is divided out
         leftover = number / factor
-        #number can be reduced by this because
         number -= leftover
         cost += number / leftover
     else:  # if number is prime, go back only 1
         number -= 1
         cost += number
-
 
 print cost

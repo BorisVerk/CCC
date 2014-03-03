@@ -2,7 +2,8 @@ def is_unique(pairs):
     for first, second in pairs.iteritems():
         if first != pairs[second] or first == second:
             return 'bad'
-    return 'good'
+    else:
+        return 'good'
 
 with open('s2.in', 'r') as infile:
     num_of_students = int(infile.readline()) #unnecessary
