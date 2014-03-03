@@ -1,4 +1,6 @@
 *.DS_Store
+
+#unfinished solutions
 contests/2011/3.py
 contests/2011/5.py
 contests/2012/4.py
@@ -6,6 +8,7 @@ contests/2014/3.py
 contests/2014/4.py
 contests/2014/5.py
 
+randomOut.py
 testing.pyc
 *PLAN*
 *.swp
